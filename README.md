@@ -161,5 +161,5 @@ ________________________________________
 Detection & Monitoring Stack
 •	WAF (ModSecurity): Configured on WEBSRV to log to C:\xampp\apache\logs\modsec_audit.log.
 •	Logging: Splunk Universal Forwarder installed on all Windows endpoints.
-•	SIEM Integration: Logs are centralized on the Ubuntu Splunk instance for correlation (as seen in your successful UNION attack traces).
+•	SIEM Integration: Logs are centralized on the Ubuntu Splunk instance for correlation.
 
