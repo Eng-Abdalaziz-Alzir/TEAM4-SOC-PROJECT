@@ -1,0 +1,12 @@
+index="pfsense" sourcetype="pfsense_FW" 
+| rex field=_raw "(?<src_ip>192\.168\.\d+\.\d+),(?<dest_ip>192\.168\.\d+\.\d+),(?<src_port>\d+),(?<dest_port>\d+)"
+| stats dc(dest_port) as unique_ports_scanned, values(dest_port) as port_list count by src_ip, dest_ip
+| where unique_ports_scanned > 15
+
+
+index="suricata" "192.168.250.128"
+| rex "src_ip\":\"(?<src>[^\"]+)"
+| rex "dest_port\":(?<port>\d+)"
+| stats dc(port) as unique_ports_hit by src
+| where unique_ports_hit > 10
+
