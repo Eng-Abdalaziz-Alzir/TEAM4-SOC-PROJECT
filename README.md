@@ -1,34 +1,33 @@
 Team4 SOC Lab Implementation
 Project Overview
 This repository contains the implementation of a Security Operations Center (SOC) environment for threat detection and incident response. The project simulates a full SOC workflow including log ingestion, threat detection, triaging, and reporting using Splunk, pfSense, and various security tools.
-
 Objectives
-Simulate a full SOC workflow including log ingestion, threat detection, triaging, and reporting
-Build a functional SOC environment using Splunk for monitoring, pfSense for network security, and detection tools like Suricata and ModSecurity
+1.	Simulate a full SOC workflow including log ingestion, threat detection, triaging, and reporting
+2.	Build a functional SOC environment using Splunk for monitoring, pfSense for network security, and detection tools like Suricata and ModSecurity
 Project Timeline
 Week 1: SOC Setup & Log Ingestion
-Set up centralized logging server using Splunk Enterprise on Ubuntu
-Configure log sources: Windows, firewall, and IDS
-Deploy pfSense Firewall and configure LAN/WAN interfaces
-Set up Windows Domain Controller
+•	Set up centralized logging server using Splunk Enterprise on Ubuntu
+•	Configure log sources: Windows, firewall, and IDS
+•	Deploy pfSense Firewall and configure LAN/WAN interfaces
+•	Set up Windows Domain Controller
 Week 2: SIEM Configuration & Use Case Development
-Install Universal Forwarders and Sysmon on endpoints
-Integrate Suricata (IDS/IPS) and ModSecurity (WAF)
-Verify log flow from all sources into Splunk
-Deploy SIEM platform Splunk
-Configure 3-5 real-world use cases (e.g., brute force, malware infection)
+•	Install Universal Forwarders and Sysmon on endpoints
+•	Integrate Suricata (IDS/IPS) and ModSecurity (WAF)
+•	Verify log flow from all sources into Splunk
+•	Deploy SIEM platform Splunk
+•	Configure 3-5 real-world use cases (e.g., brute force, malware infection)
 Week 3: Alert Triage and Incident Management
-Configure SPL rules and alerts in Splunk
-Simulate attacks (SQLi for WAF, testmyids.com for Suricata)
-Perform Active Directory attack simulations
-Triage and analyze triggered alerts
-Apply MITRE ATT&CK mapping to events
+•	Configure SPL rules and alerts in Splunk
+•	Simulate attacks (SQLi for WAF, testmyids.com for Suricata)
+•	Perform Active Directory attack simulations
+•	Triage and analyze triggered alerts
+•	Apply MITRE ATT&CK mapping to events
 Week 4: Reporting & Final Presentation
-Draft the Incident Response Playbook
-Finalize the Technical Report and Executive Summary
-Record the project demonstration video
-Prepare KPI metrics
-Perform root cause analysis for a selected incident
+•	Draft the Incident Response Playbook
+•	Finalize the Technical Report and Executive Summary
+•	Record the project demonstration video
+•	Prepare KPI metrics
+•	Perform root cause analysis for a selected incident
 Network Architecture
 Core Infrastructure
 Component	Details
@@ -61,38 +60,32 @@ Technical Writer	Documentation, Gantt chart, Final Presentation	GitHub, LaTeX/Of
 Use Cases & Detection Rules
 1. Brute Force Attack Detection
 Description: Detect when an adversary attempts to gain access by guessing credentials through multiple login attempts.
-
 Data Sources:
-
-Windows Event Log (EventCode 4625)
-Linux /var/log/secure
-Web Logs (HTTP 401 status codes)
+•	Windows Event Log (EventCode 4625)
+•	Linux /var/log/secure
+•	Web Logs (HTTP 401 status codes)
 SPL Rule:
-
+splunk
 index="windows_dc" EventCode=4625
 | stats count min(_time) as firstTime max(_time) as lastTime by Source_Network_Address, Account_Name
 | where count >= 5
 | eval severity="high"
 2. SQL Injection (SQLi) Monitoring
 Description: Detect malicious SQL code inserted into input fields or URLs to manipulate backend databases.
-
 Data Sources:
-
-Web server access logs (Apache, IIS, Nginx)
-WAF logs (ModSecurity)
+•	Web server access logs (Apache, IIS, Nginx)
+•	WAF logs (ModSecurity)
 SPL Rule:
-
+splunk
 index=* "UNION" | stats values(sourcetype) as "Source Types", count by host
 3. Network Scanning Reconnaissance
 Description: Detect mapping of live hosts, open ports, and services as part of the "Reconnaissance" phase.
-
 Data Sources:
-
-Firewall logs
-IDS/IPS logs (Suricata)
-Netflow data
+•	Firewall logs
+•	IDS/IPS logs (Suricata)
+•	Netflow data
 SPL Rule:
-
+splunk
 index="suricata" "192.168.250.128"
 | rex "src_ip\":\"(?<src>[^\"]+)"
 | rex "dest_port\":(?<port>\d+)"
@@ -100,28 +93,27 @@ index="suricata" "192.168.250.128"
 | where unique_ports_hit > 10
 Installation & Setup
 Prerequisites
-VMware Workstation or compatible virtualization platform
-Host machine with at least 16GB RAM
-ISO files for required operating systems
+•	VMware Workstation or compatible virtualization platform
+•	Host machine with at least 16GB RAM
+•	ISO files for required operating systems
 Setup Sequence
-Install Splunk Enterprise on Ubuntu
-Install Universal Forwarders on all endpoints
-Configure Domain Controller Environment
-Install Xampp Web app server
-Install pfSense firewall
-Install Suricata IDS/IPS
-Configure DVWA vulnerable Web app on xampp
-Configure ModSecurity WAF to detect web app attacks
-Write rules in Splunk to generate alerts
-Configure Active Directory attack detection
+1.	Install Splunk Enterprise on Ubuntu
+2.	Install Universal Forwarders on all endpoints
+3.	Configure Domain Controller Environment
+4.	Install Xampp Web app server
+5.	Install pfSense firewall
+6.	Install Suricata IDS/IPS
+7.	Configure DVWA vulnerable Web app on xampp
+8.	Configure ModSecurity WAF to detect web app attacks
+9.	Write rules in Splunk to generate alerts
+10.	Configure Active Directory attack detection
 Power On Sequence
-pfSense
-Ubuntu (Splunk)
-TEAM4-DC
-Endpoints
+1.	pfSense
+2.	Ubuntu (Splunk)
+3.	TEAM4-DC
+4.	Endpoints
 Validation
 Access Splunk Web at http://192.168.254.156:8000 and verify "Data Summary" shows logs from all hosts.
-
 Testing Scenarios
 Test ID	Scenario	Expected Outcome
 TC-01	Brute Force from Kali (192.168.250.128)	Splunk triggers alert after 5 failed attempts
@@ -134,15 +126,15 @@ IP Address Conflicts	Medium	Maintain strict IP standard
 Log Injection Failure	High	Verify connectivity between Universal Forwarders and Splunk
 WAF False Positives	Medium	Test ModSecurity in "Detection Only" mode first
 Key Performance Indicators (KPIs)
-System Uptime: 99% availability of Splunk web interface during testing phase
-Log Coverage: 100% of critical endpoints successfully forwarding logs
-Detection Accuracy: Zero "false negatives" during simulated attacks
-Response Time: Alert generation in Splunk within 2 minutes of security event
+•	System Uptime: 99% availability of Splunk web interface during testing phase
+•	Log Coverage: 100% of critical endpoints successfully forwarding logs
+•	Detection Accuracy: Zero "false negatives" during simulated attacks
+•	Response Time: Alert generation in Splunk within 2 minutes of security event
 Future Improvements
-Transition from local log storage to dedicated Syslog-ng server
-Integrate automated SOAR platform to automatically block IPs in pfSense
-Expand use cases beyond current 10 scenarios
-Upgrade to 32GB RAM for handling increased load
+•	Transition from local log storage to dedicated Syslog-ng server
+•	Integrate automated SOAR platform to automatically block IPs in pfSense
+•	Expand use cases beyond current 10 scenarios
+•	Upgrade to 32GB RAM for handling increased load
 Repository Structure
 ├── docs/
 │   ├── project-planning.md
@@ -161,3 +153,21 @@ Repository Structure
 │   └── modsecurity/
 └── reports/
     ├── technical
+could you give all details and data in : Repository Structure
+├── docs/
+│ ├── project-planning.md
+│ ├── network-architecture.md
+│ └── use-cases.md
+├── splunk/
+│ ├── dashboards/
+│ ├── alerts/
+│ └── saved-searches/
+├── scripts/
+│ ├── setup/
+│ └── testing/
+├── configs/
+│ ├── pfsense/
+│ ├── suricata/
+│ └── modsecurity/
+└── reports/
+├── technical
