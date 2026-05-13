@@ -146,21 +146,3 @@ Transition from local log storage to dedicated Syslog-ng server
 Integrate automated SOAR platform to automatically block IPs in pfSense
 Expand use cases beyond current 10 scenarios
 Upgrade to 32GB RAM for handling increased load
-Repository Structure
-├── docs/
-│   ├── project-planning.md
-│   ├── network-architecture.md
-│   └── use-cases.md
-├── splunk/
-│   ├── dashboards/
-│   ├── alerts/
-│   └── saved-searches/
-├── scripts/
-│   ├── setup/
-│   └── testing/
-├── configs/
-│   ├── pfsense/
-│   ├── suricata/
-│   └── modsecurity/
-└── reports/
-    ├── technical
